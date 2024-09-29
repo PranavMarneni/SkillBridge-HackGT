@@ -5,8 +5,6 @@ from .web_scrapper import *
 
 # /Users/pranavmarneni/Documents/GitHub/SkillBridge-HackGT/backend/app/utils/web_scrapper.py
 # /Users/pranavmarneni/Documents/GitHub/SkillBridge-HackGT/backend/app/utils/LLM.py
-
-
 # /Users/pranavmarneni/Documents/GitHub/SkillBridge-HackGT/backend/app/views.py
 # /Users/pranavmarneni/Documents/GitHub/SkillBridge-HackGT/backend
 # /Users/pranavmarneni/Documents/GitHub/SkillBridge-HackGT/backend/backend
@@ -70,10 +68,11 @@ def getSkillSet(scrapedJobs):
     
     # Remove duplicates
     uniqueSkills = list(set(allSkills))
+    
     return uniqueSkills
 
 # Instead of hardcoding, get scraped jobs from the web_scrapper module
-scrapedJobs = main_royce()  # Call the web scraper's main function to get job descriptions
+scrapedJobs = main_method()  # Call the web scraper's main function to get job descriptions
 
 if scrapedJobs:
     skills = getSkillSet(scrapedJobs)

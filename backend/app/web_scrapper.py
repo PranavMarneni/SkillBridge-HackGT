@@ -8,7 +8,6 @@ from webdriver_manager.chrome import ChromeDriverManager
 from selenium.common.exceptions import TimeoutException, WebDriverException
 import time
 
-print("TestETstTTETEUTYEUTYE")
 
 logging.basicConfig(level=logging.INFO)
 
@@ -83,39 +82,47 @@ def extract_job_details(soup, url):
     
     return job_details_str
 
+# In web_scrapper.py
 def get_job_details(url):
+    # Import royce inside the function to avoid circular import issues
+    from .royce import getSkillSet  # Move the import here
+
+    # Rest of your function logic...
     page_source = get_selenium_page(url)
     if page_source:
         soup = BeautifulSoup(page_source, 'html.parser')
         return extract_job_details(soup, url)
     return None
 
-def main_royce():
-    # List of URLs to scrape
-    jobUrlList = [
-        'https://www.indeed.com/q-software-engineer-l-atlanta,-ga-jobs.html?vjk=5e9e805838d10141&advn=6984854090123921',
-        'https://www.indeed.com/q-software-engineer-l-atlanta,-ga-jobs.html?vjk=1c5767a93c89b736&advn=1082936424650003'
-    ]
-    
+
+def main_method(urls):
     jobScrapeList = []
     
-    for url in jobUrlList:
-        if validate_job_url(url):
-            #logging.info(f"Scraping job details from: {url}")
-            job_data = get_job_details(url)
+    for url in urls:  # Use 'urls' parameter instead of 'jobUrlList'
+        if validate_job_url(url.url):  # Adjust based on how URLs are stored in the model
+            job_data = get_job_details(url.url)
             if job_data:
-                jobScrapeList.append(job_data)  # Add long string to list
-                #logging.info(f"Scraped Job Data: {job_data}")
-            #else:
-                #logging.warning(f"Failed to extract job details from: {url}")
-        #else:
-            #logging.warning(f"Invalid URL skipped: {url}")
+                jobScrapeList.append(job_data)  # Collect job data
     
-    # Output all scraped data in list format
     if jobScrapeList:
-        return jobScrapeList  # Return the list of long strings
+        # Extract the required skills from the scraped jobs
+        extracted_skills = getSkillSet(jobScrapeList)
+
+        # Assuming you have the PDF resume already loaded, generate the study plan
+        pdf_path = "/Users/pranavmarneni/Downloads/Main_Resume-2.pdf"
+        pdf_text = pdf_to_string(pdf_path)
+
+        if pdf_text:
+            # Generate a study plan based on the resume text and extracted skills
+            study_plan = createStudyPlan(pdf_text, extracted_skills)
+            
+            return study_plan  # Return the generated study plan
+        else:
+            logging.error("Failed to extract text from PDF.")
+            return []
     else:
         return []
+
 
 if __name__ == "__main__":
     scraped_jobs_list = main()

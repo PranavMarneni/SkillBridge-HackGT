@@ -1,27 +1,11 @@
-from django.shortcuts import render, redirect
-from .models import JobPostingURL
-import os
-from .forms import URLForm
-from .serializer import JobPostingURLSerializer
-from rest_framework.response import Response
 from rest_framework.decorators import api_view
-from .royce import *
+from rest_framework.response import Response
+from .models import JobPostingURL
+from .serializer import JobPostingURLSerializer
+from .royce import getSkillSet
+from .web_scrapper import main_method
 
-def submit_url(request):
-    if request.method == 'POST':
-        form = URLForm(request.POST)
-        if form.is_valid():
-            form.save()
-            return redirect('url_list')  # Redirect to a page that shows the list of URLs
-    else:
-        form = URLForm()
-    
-    return render(request, 'submit_url.html', {'form': form})
-
-def url_list(request):
-    urls = JobPostingURL.objects.all().order_by('-created_at')
-    return render(request, 'url_list.html', {'urls': urls})
-
+# Store the URLs when submitted by the user
 @api_view(['POST'])
 def submit_url_api(request):
     if request.method == 'POST':
@@ -30,9 +14,21 @@ def submit_url_api(request):
             serializer.save()
             return Response(serializer.data, status=201)
         return Response(serializer.errors, status=400)
-    
+
+# Process the URLs when the user is done submitting
+@api_view(['POST'])
 def process_urls(request):
-    studyPlan = []
-    urls = JobPostingURL.objects.all()  # Retrieve all URLs
-    getSkillSet
-    return render(request, 'process_urls.html', {'urls': urls})
+    # Retrieve all the URLs (you could filter based on the session or other identifier)
+    urls = JobPostingURL.objects.all()
+    # Assuming getSkillSet processes these URLs in your app
+    processed_data = main_method(urls)  # Replace with your actual processing logic
+    
+    return Response({"message": "URLs processed", "data": processed_data}, status=200)
+
+
+# View to list all submitted URLs
+@api_view(['GET'])
+def url_list(request):
+    urls = JobPostingURL.objects.all()  # Fetch all submitted URLs
+    serializer = JobPostingURLSerializer(urls, many=True)
+    return Response(serializer.data, status=200)

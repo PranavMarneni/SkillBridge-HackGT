@@ -1,22 +1,27 @@
 import React from 'react';
-import './card.css'; // Import CSS for styling
+import './card.css';  // Import CSS for the card component
 
-export default function Card({ topic, text, videos }) {
+const Card = ({ topic, text, videos }) => {
     return (
         <div className="card">
-            <h2 className="card-title">{topic}</h2>
-            <p className="card-text">{text}</p>
-            <div className="card-videos">
-                {videos.map((video, index) => (
-                    <a key={index} href={video.link} target="_blank" rel="noopener noreferrer">
-                        <img 
-                            src={video.thumbnail} 
-                            alt={`Video ${index + 1}`} 
-                            className="video-thumbnail"
-                        />
-                    </a>
-                ))}
-            </div>
+            <h2>{topic}</h2>
+            <p>{text}</p>
+            {videos && videos.length > 0 && (
+                <div>
+                    <h3>Related Videos:</h3>
+                    <ul>
+                        {videos.map((video, index) => (
+                            <li key={index}>
+                                <a href={video} target="_blank" rel="noopener noreferrer">
+                                    Watch Video {index + 1}
+                                </a>
+                            </li>
+                        ))}
+                    </ul>
+                </div>
+            )}
         </div>
     );
-}
+};
+
+export default Card;
