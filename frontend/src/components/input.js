@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import './input.css'; // Import the CSS for styling
+import './input.css';
 
 const InputForm = () => {
     const [jobLink, setJobLink] = useState('');  // State to store the job link
@@ -9,7 +9,7 @@ const InputForm = () => {
         event.preventDefault();
 
         if (jobLink.trim()) {
-            // Make an API call using fetch
+            // API call for submitting the job link
             try {
                 const response = await fetch('http://127.0.0.1:8000/api/submit-url/', {
                     method: 'POST',
@@ -21,7 +21,7 @@ const InputForm = () => {
 
                 if (response.ok) {
                     setAlertMessage(`Link submitted successfully: ${jobLink}`);
-                    setJobLink('');  // Clear the input field after submission
+                    setJobLink('');  // Clear the input field
                 } else {
                     setAlertMessage('There was an error submitting the link.');
                 }
@@ -33,13 +33,33 @@ const InputForm = () => {
         }
     };
 
+    const handleDoneSubmitting = async () => {
+        // Trigger the backend to process the URLs
+        try {
+            const response = await fetch('http://127.0.0.1:8000/api/process-urls/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            });
+
+            if (response.ok) {
+                setAlertMessage('Processing URLs...');
+            } else {
+                setAlertMessage('Error occurred during processing.');
+            }
+        } catch (error) {
+            setAlertMessage('Network error: Could not process the links.');
+        }
+    };
+
     return (
         <div className="input-form">
             <h2 className="input-title">Add Your Job Links</h2>
             <p className="input-subtitle">Please place the links in the form underneath:</p>
             <form onSubmit={handleSubmit}>
                 <input
-                    type="url"  // Changed to "url" type for better validation
+                    type="url"
                     placeholder="Job links go here"
                     value={jobLink}
                     onChange={(e) => setJobLink(e.target.value)}
@@ -52,7 +72,7 @@ const InputForm = () => {
                     <button
                         type="button"
                         className="done-button"
-                        onClick={() => alert('Done submitting!')}
+                        onClick={handleDoneSubmitting}
                     >
                         Done Submitting
                     </button>

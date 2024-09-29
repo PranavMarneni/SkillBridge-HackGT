@@ -8,6 +8,8 @@ from webdriver_manager.chrome import ChromeDriverManager
 from selenium.common.exceptions import TimeoutException, WebDriverException
 import time
 
+print("TestETstTTETEUTYEUTYE")
+
 logging.basicConfig(level=logging.INFO)
 
 def validate_job_url(url):
@@ -88,7 +90,7 @@ def get_job_details(url):
         return extract_job_details(soup, url)
     return None
 
-def main():
+def main_royce():
     # List of URLs to scrape
     jobUrlList = [
         'https://www.indeed.com/q-software-engineer-l-atlanta,-ga-jobs.html?vjk=5e9e805838d10141&advn=6984854090123921',

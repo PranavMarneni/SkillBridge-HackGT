@@ -7,6 +7,8 @@ name = "pypi"
 djangorestframework = "*"
 django-cors-headers = "*"
 django = "*"
+openai = "*"
+pypdf2 = "*"
 
 [dev-packages]
 

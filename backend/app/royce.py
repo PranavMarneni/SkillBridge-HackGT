@@ -1,7 +1,24 @@
 import openai
 from pydantic import BaseModel
 import PyPDF2
-import web_scrapper  # Import your web scraper module
+from .web_scrapper import *
+
+# /Users/pranavmarneni/Documents/GitHub/SkillBridge-HackGT/backend/app/utils/web_scrapper.py
+# /Users/pranavmarneni/Documents/GitHub/SkillBridge-HackGT/backend/app/utils/LLM.py
+
+
+# /Users/pranavmarneni/Documents/GitHub/SkillBridge-HackGT/backend/app/views.py
+# /Users/pranavmarneni/Documents/GitHub/SkillBridge-HackGT/backend
+# /Users/pranavmarneni/Documents/GitHub/SkillBridge-HackGT/backend/backend
+# /Users/pranavmarneni/Documents/GitHub/SkillBridge-HackGT/backend/app/utils/LLM.py
+
+
+# Import everything from the module
+  # or import specific functions like main
+ # Relative import
+ # If web_scrapper.py is in the app directory
+
+ # Import your web scraper module
 
 # Initialize the OpenAI API key
 
@@ -56,7 +73,7 @@ def getSkillSet(scrapedJobs):
     return uniqueSkills
 
 # Instead of hardcoding, get scraped jobs from the web_scrapper module
-scrapedJobs = web_scrapper.main()  # Call the web scraper's main function to get job descriptions
+scrapedJobs = main_royce()  # Call the web scraper's main function to get job descriptions
 
 if scrapedJobs:
     skills = getSkillSet(scrapedJobs)

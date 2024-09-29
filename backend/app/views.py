@@ -1,11 +1,11 @@
 from django.shortcuts import render, redirect
 from .models import JobPostingURL
+import os
 from .forms import URLForm
 from .serializer import JobPostingURLSerializer
 from rest_framework.response import Response
-from rest_framework.decorators import api_view 
-from . LLM import *
-from . webScrapper import *
+from rest_framework.decorators import api_view
+from .royce import *
 
 def submit_url(request):
     if request.method == 'POST':
